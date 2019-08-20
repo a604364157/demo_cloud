@@ -49,6 +49,12 @@ public class RateLimitByIpGatewayFilter implements GatewayFilter, Ordered {
         return Bucket4j.builder().addLimit(limit).build();
     }
 
+    public RateLimitByIpGatewayFilter(int capacity, int refillTokens, Duration refillDuration) {
+        this.capacity = capacity;
+        this.refillTokens = refillTokens;
+        this.refillDuration = refillDuration;
+    }
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         InetSocketAddress address = exchange.getRequest().getRemoteAddress();
@@ -57,7 +63,7 @@ public class RateLimitByIpGatewayFilter implements GatewayFilter, Ordered {
         }
         String ip = address.getAddress().getHostAddress();
         Bucket bucket = CACHE.computeIfAbsent(ip,k -> createBucket());
-        log.debug("IP: " + ip + "，TokenBucket Available Tokens: " + bucket.getAvailableTokens());
+        log.info("IP: " + ip + "，TokenBucket Available Tokens: " + bucket.getAvailableTokens());
         if (bucket.tryConsume(1)) {
             return chain.filter(exchange);
         } else {
@@ -69,6 +75,6 @@ public class RateLimitByIpGatewayFilter implements GatewayFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return -1000;
     }
 }

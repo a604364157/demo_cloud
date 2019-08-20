@@ -11,9 +11,38 @@ spring:
         locator:
           enabled: true #开启服务的自动注册发现（及以注册中心的服务ID自动配置路由）
           lower-case-service-id: true #服务ID小写
-
+      #过滤器工厂配置
       default-filters:
         - Elapsed=true
+        #这里是配置的全局熔断，和配置类是类似的，但是这是全局的
+        - name: Hystrix
+          args:
+            name: fallback
+            fallbackUri: forward:/error/fallbackGlobal
+      #这个路由和配置类的路由配置是完全一致的，为了区分改为2
+      #这样配置是因为测试RequestRateLimiter限流工厂，貌似只能配置在单独路由下
+      routes:
+        - id: client-2
+          uri: lb://cloud-client
+          order: 1
+          predicates:
+            - Path=/cloud-client-2/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                #限流规则（key的匹配）bean对象名
+                key-resolver: '#{@remoteAddrKeyResolver}'
+                #令牌桶每秒填充平均速率
+                redis-rate-limiter.replenishRate: 1
+                #令牌桶容量
+                redis-rate-limiter.burstCapacity: 5
+
+  #配置redis，这是默认配置，不配也是这个
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
 
 eureka:
   instance:
