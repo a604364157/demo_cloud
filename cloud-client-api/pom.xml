@@ -8,10 +8,12 @@
         <version>2.1.7.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.jjx</groupId>
     <artifactId>cloud-client-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cloud-client-api</name>
+
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -29,6 +31,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+            <version>1.18.8</version>
         </dependency>
 
         <dependency>
@@ -42,11 +45,6 @@
             <version>2.9.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -60,14 +58,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

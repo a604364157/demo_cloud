@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * @author jiangjx
  */
-@Api("测试接口")
+@Api(tags = "测试接口")
 @RequestMapping("client")
 @FeignClient(name = Constant.CLIENT_SERVIEC_ID)
 public interface IHelloApi {

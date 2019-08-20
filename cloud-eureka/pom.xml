@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.jjx</groupId>
-    <artifactId>cloud-server</artifactId>
+    <artifactId>cloud-eureka</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cloud-server</name>
+    <name>cloud-eureka</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -20,18 +20,14 @@
     </properties>
 
     <dependencies>
+        <!--    eureka注册中心服务，只需要引这个依赖就够了    -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
+    <!--  这个配置是指定cloud依赖版本，维护常用组件的版本依赖，防止自己瞎引用导致冲突  -->
     <dependencyManagement>
         <dependencies>
             <dependency>
