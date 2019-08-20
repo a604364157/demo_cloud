@@ -15,7 +15,7 @@ public class HelloController implements IHelloApi {
     @Override
     public HelloOutDTO hello(@RequestBody HelloInDTO in) {
         HelloOutDTO out = new HelloOutDTO();
-        out.setMsg("hello " + in.getName());
+        out.setMsg("hello "+ in.getName());
         return out;
     }
 }

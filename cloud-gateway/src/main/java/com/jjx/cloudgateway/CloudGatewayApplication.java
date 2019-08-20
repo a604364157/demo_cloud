@@ -2,13 +2,13 @@ package com.jjx.cloudgateway;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author jiangjx
  */
 @Slf4j
-@SpringCloudApplication
+@SpringBootApplication
 public class CloudGatewayApplication {
 
     public static void main(String[] args) {

@@ -15,4 +15,8 @@ public class FallBackController {
         return Mono.just("service error, jump fallback");
     }
 
+    @RequestMapping("error/fallbackGlobal")
+    public Mono<String> fallbackGlobal() {
+        return Mono.just("service error, jump fallbackGlobal");
+    }
 }
