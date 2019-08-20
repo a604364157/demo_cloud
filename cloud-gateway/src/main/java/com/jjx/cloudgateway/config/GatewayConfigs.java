@@ -12,6 +12,7 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 
 import java.time.Duration;
 
@@ -51,7 +52,9 @@ public class GatewayConfigs {
                                 //添加一个按CPU占用的动态限流
                                 .filter(cpuGatewayFilter)
                                 //添加一个熔断器，熔断后的转发路径
-                                .hystrix(config -> { config.setFallbackUri("forward:/error/fallback"); })
+                                .hystrix(config -> config.setFallbackUri("forward:/error/fallback"))
+                                //添加一个路由重试，这里是遇到500错误重试两次
+                                .retry(config -> config.setRetries(2).setStatuses(HttpStatus.INTERNAL_SERVER_ERROR))
                         ).uri("lb://cloud-client").order(0).id("client-1"))
                 .build();
     }
