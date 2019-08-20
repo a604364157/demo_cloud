@@ -4,6 +4,7 @@ import com.jjx.cloudclientapi.dto.HelloInDTO;
 import com.jjx.cloudclientapi.dto.HelloOutDTO;
 import com.jjx.cloudclientapi.inter.IHelloApi;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,10 +19,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RestController
 public class HelloController implements IHelloApi {
 
+    @Value("${name}")
+    private String name;
+
     @Override
     public HelloOutDTO hello(@RequestBody HelloInDTO in) {
         HelloOutDTO out = new HelloOutDTO();
-        out.setMsg("hello "+ in.getName());
+        out.setMsg("hello "+ in.getName() + name);
         return out;
     }
 

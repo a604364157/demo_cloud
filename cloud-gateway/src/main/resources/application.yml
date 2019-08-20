@@ -5,6 +5,12 @@ spring:
   application:
     name: cloud-gateway
 
+  servlet:
+    #上传文件的配置，网关必须配置
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 10MB
+
   cloud:
     gateway:
       discovery:
