@@ -26,7 +26,7 @@ public class HelloController implements IHelloApi {
      * 本系统开启了配置刷新功能
      * 配置刷新需要配置文件和@RefreshScope注解
      * 这样也不会自动刷新配置
-     * 需要调用(host:port/actuator/refresh)服务来刷新配置
+     * 需要调用post(host:port/actuator/refresh)服务来刷新配置
      *
      * 要达到自动刷新，需要配置github的webhook功能来实现
      * 这个功能就是当收到某个事件后触发一些事件
@@ -41,10 +41,13 @@ public class HelloController implements IHelloApi {
      * 在配置服务端和客户端都需要引入bus依赖和消息中间件，我选的rabbitMQ
      * 需要先安装erLang和RabbitMQ，默认口令是guest/guest
      * 和redis同样，spring cloud会有默认配置，不配置rabbitMQ，也会有默认的配置
-     * 需要调用(host:port/actuator/bus-refresh)服务来刷新配置
+     * 需要调用post(host:port/actuator/bus-refresh)服务来刷新配置
      *
      * 使用bus后会导致配置在所有的客户端都同步，如果我们只想刷新部分
      * 可以使用（/actuator/bus-refresh/{service_id:port}）来指向刷新
+     *
+     * 可以使用get（/actuator/httptrace）【前提配置 bus.trace.enabled=true】
+     * 来看消息总线的日志
      */
     @Value("${name}")
     private String name;

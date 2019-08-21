@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * 全局过滤器
+ *
  * @author jiangjx
  */
 public class TokenFilter implements GlobalFilter, Ordered {
@@ -18,7 +19,8 @@ public class TokenFilter implements GlobalFilter, Ordered {
         if (token == null || token.isEmpty()) {
             //如果没有token认证，则直接返回401
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return exchange.getResponse().setComplete();
+            //毕竟是测试，所以这里还是不拦截了
+//            return exchange.getResponse().setComplete()
         }
         return chain.filter(exchange);
     }
