@@ -22,6 +22,7 @@
         <module>cloud-gateway</module>
         <module>cloud-client</module>
         <module>cloud-client-api</module>
+        <module>cloud-config</module>
     </modules>
 
     <dependencies>

@@ -5,11 +5,37 @@ spring:
   application:
     name: cloud-client
   cloud:
+    #config配置（连接地址/{label}/{application}-{profile}.yml）
     config:
-      uri: http://localhost:10001
-      name: ${spring.application.name}
+      discovery:
+        #连接配置服务器的服务ID
+        service-id: cloud-config
+        #开启服务自动发现
+        enabled: true
+      #后缀
       profile: dev
+      #分支
       label: master
+#      name: 如果引用的配置文件名不是服务名，则用这个配置重写
+
+    #消息总线
+    bus:
+      enabled: true
+      trace:
+        enabled: true
+
+  #mq的配置，默认配置，不配也是这个
+  rabbitmq:
+    host: localhost
+    port: 5672
+
+#开启自动刷新（配置中心的自动刷新）
+#改成bus-refresh则为消息总线方式，消息总线方式理论来说应调用服务端，但是实际上调用任意一个都能达到所有同步
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
 
 eureka:
   instance:
@@ -17,3 +43,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:10001/eureka/
+
+logging:
+  level:
+    root: info
+  file: logs/client.log

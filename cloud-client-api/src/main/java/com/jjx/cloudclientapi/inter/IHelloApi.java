@@ -22,6 +22,7 @@ public interface IHelloApi {
 
     /**
      * 测试接口
+     *
      * @param in 入参
      * @return 出参
      */
@@ -31,8 +32,21 @@ public interface IHelloApi {
 
     /**
      * 测试接口
+     *
+     * @return 出参
+     */
+    @GetMapping("hello")
+    @ApiOperation("测试接口")
+    String hello();
+
+    /**
+     *
+     * 测试接口
+     * @param key key
+     * @param count 次数
+     * @return 次数
      */
     @GetMapping("exCount")
     @ApiOperation("测试接口")
-    int exCount(@RequestParam("key")String key, @RequestParam(name ="count", defaultValue ="3")int count);
+    int exCount(@RequestParam("key") String key, @RequestParam(name = "count", defaultValue = "3") int count);
 }

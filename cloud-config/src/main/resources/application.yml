@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: config-server
+    name: cloud-config
   cloud:
     config:
       server:
@@ -15,6 +15,22 @@ spring:
 #          username:
 #          password:
 
+    #消息总线配置
+    bus:
+      enabled: true
+      trace:
+        enabled: true
+  #mq的配置，默认配置，不配也是这个
+  rabbitmq:
+    host: localhost
+    port: 5672
+
+#开启自动刷新，消息总线方式，这是开在服务端
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
 
 eureka:
   instance:
