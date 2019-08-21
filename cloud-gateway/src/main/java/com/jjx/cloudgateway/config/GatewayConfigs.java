@@ -2,12 +2,14 @@ package com.jjx.cloudgateway.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jjx.cloudcommom.dto.InDTO;
 import com.jjx.cloudgateway.filter.ElapsedFilter;
 import com.jjx.cloudgateway.filter.ElapsedGatewayFilterFactory;
 import com.jjx.cloudgateway.filter.RateLimitByCpuGatewayFilter;
 import com.jjx.cloudgateway.filter.RateLimitByIpGatewayFilter;
 import com.jjx.cloudgateway.filter.RemoteAddrKeyResolver;
 import com.jjx.cloudgateway.filter.TokenFilter;
+import io.netty.buffer.ByteBufAllocator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -15,12 +17,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.core.io.buffer.NettyDataBufferFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 
+import java.net.URI;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -85,7 +92,38 @@ public class GatewayConfigs {
                                     }
                                     if (!method.matches(HttpMethod.GET.toString()) && MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(mediaType.getType())) {
                                         //非GET请求为JSON
+                                        URI uri = serverHttpRequest.getURI();
+                                        URI newUri = UriComponentsBuilder.fromUri(uri).build(true).toUri();
+                                        ServerHttpRequest request = exchange.getRequest().mutate().uri(newUri).build();
+                                        String bodyStr = modBodyJson(serverHttpRequest);
+                                        DataBuffer bodyDataBuffer = stringBuffer(bodyStr);
+                                        Flux<DataBuffer> bodyFlux = Flux.just(bodyDataBuffer);
+                                        HttpHeaders headers = new HttpHeaders();
+                                        headers.putAll(exchange.getRequest().getHeaders());
+                                        int length = bodyStr.getBytes().length;
+                                        headers.remove(HttpHeaders.CONTENT_LENGTH);
+                                        headers.setContentLength(length);
+                                        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+                                        request = new ServerHttpRequestDecorator(request) {
+                                            @Override
+                                            public HttpHeaders getHeaders() {
+                                                long contentLength = headers.getContentLength();
+                                                HttpHeaders httpHeaders = new HttpHeaders();
+                                                httpHeaders.putAll(super.getHeaders());
+                                                if (contentLength > 0) {
+                                                    httpHeaders.setContentLength(contentLength);
+                                                } else {
+                                                    httpHeaders.set(HttpHeaders.TRANSFER_ENCODING, "chunked");
+                                                }
+                                                return httpHeaders;
+                                            }
 
+                                            @Override
+                                            public Flux<DataBuffer> getBody() {
+                                                return bodyFlux;
+                                            }
+                                        };
+                                        request.mutate().header(HttpHeaders.CONTENT_LENGTH, Integer.toString(bodyStr.length()));
                                     }
                                     return null;
                                 })
@@ -105,10 +143,21 @@ public class GatewayConfigs {
         return bodyRef.get();
     }
 
+    private DataBuffer stringBuffer(String value) {
+        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+        NettyDataBufferFactory nettyDataBufferFactory = new NettyDataBufferFactory(ByteBufAllocator.DEFAULT);
+        DataBuffer buffer = nettyDataBufferFactory.allocateBuffer(bytes.length);
+        buffer.write(bytes);
+        return buffer;
+    }
+
     private String modBodyJson(ServerHttpRequest serverHttpRequest) {
         String body = resolveBodyFromRequest(serverHttpRequest);
         JSONObject object = JSON.parseObject(body);
-        return "";
+        InDTO<Object> inDTO = new InDTO<>();
+        inDTO.setBody(object);
+        inDTO.setHeader(new JSONObject());
+        return JSON.toJSONString(inDTO);
     }
 
     /**
