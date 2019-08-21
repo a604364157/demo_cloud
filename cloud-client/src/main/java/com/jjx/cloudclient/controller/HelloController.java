@@ -3,6 +3,8 @@ package com.jjx.cloudclient.controller;
 import com.jjx.cloudclientapi.dto.HelloInDTO;
 import com.jjx.cloudclientapi.dto.HelloOutDTO;
 import com.jjx.cloudclientapi.inter.IHelloApi;
+import com.jjx.cloudcommom.dto.InDTO;
+import com.jjx.cloudcommom.dto.OutDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -53,10 +56,11 @@ public class HelloController implements IHelloApi {
     private String name;
 
     @Override
-    public HelloOutDTO hello(@RequestBody HelloInDTO in) {
+    public OutDTO<HelloOutDTO> hello(@RequestBody InDTO<HelloInDTO> in) {
+        String name = Optional.ofNullable(in).map(InDTO::getBody).map(HelloInDTO::getName).orElse("");
         HelloOutDTO out = new HelloOutDTO();
-        out.setMsg("hello "+ in.getName());
-        return out;
+        out.setMsg("hello "+ name);
+        return OutDTO.build(out);
     }
 
     @Override

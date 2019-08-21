@@ -33,6 +33,12 @@ public class OutDTO<T> implements Serializable {
         this.headerBody.setBody(body);
     }
 
+    public static <T> OutDTO<T> build(T t) {
+        OutDTO<T> out = new OutDTO<>();
+        out.setBodyOutData(t);
+        return out;
+    }
+
     private HeaderBody<OutBody<T>> createHeaderBody() {
         return this.headerBody != null ? this.headerBody : new HeaderBody<>();
     }

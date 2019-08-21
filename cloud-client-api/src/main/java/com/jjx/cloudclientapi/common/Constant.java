@@ -5,6 +5,6 @@ package com.jjx.cloudclientapi.common;
  */
 public interface Constant {
 
-    String CLIENT_SERVIEC_ID = "cloud-client-api";
+    String CLIENT_SERVICE_ID = "cloud-client-api";
 
 }
