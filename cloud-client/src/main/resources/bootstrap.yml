@@ -24,6 +24,28 @@ spring:
       trace:
         enabled: true
 
+    #stream配置
+    stream:
+      default-binder: server-log
+      binders:
+        server-log:
+          type: rabbit
+
+      bindings:
+        #生产者
+        log-out-put:
+          destination: server-log
+#          content-type: application/json
+#          default-binder: server-log
+        #消费者
+        log-in-put:
+          destination: server-log
+#            content-type: application/json
+#            default-binder: server-log
+
+
+
+
   #mq的配置，默认配置，不配也是这个
   rabbitmq:
     host: localhost

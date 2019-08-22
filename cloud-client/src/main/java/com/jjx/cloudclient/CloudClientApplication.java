@@ -8,7 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author jiangjx
  */
 @EnableSwagger2
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.jjx")
 public class CloudClientApplication {
 
     public static void main(String[] args) {
