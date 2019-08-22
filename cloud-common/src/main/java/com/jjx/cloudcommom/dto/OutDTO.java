@@ -2,6 +2,7 @@ package com.jjx.cloudcommom.dto;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ public class OutDTO<T> implements Serializable {
 
     private static final long serialVersionUID = 4602714741495982191L;
     @JSONField(name = "ROOT")
+    @JsonProperty("ROOT")
     public HeaderBody<OutBody<T>> headerBody;
 
     public OutDTO() {

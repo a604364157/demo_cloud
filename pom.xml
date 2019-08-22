@@ -30,6 +30,7 @@
         <module>cloud-client-api</module>
         <module>cloud-config</module>
         <module>cloud-common</module>
+        <module>cloud-auth</module>
     </modules>
 
     <dependencies>

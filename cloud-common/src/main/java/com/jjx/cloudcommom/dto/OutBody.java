@@ -1,6 +1,7 @@
 package com.jjx.cloudcommom.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
@@ -15,16 +16,19 @@ public class OutBody<T> implements Serializable {
      * 执行成功标志 0成功1失败
      */
     @JSONField(name = "STATUS")
+    @JsonProperty("STATUS")
     private String status;
     /**
      * 服务返回信息，通常为错误信息
      */
     @JSONField(name = "MSG")
+    @JsonProperty("MSG")
     private String msg;
     /**
      * 服务返回数据
      */
     @JSONField(name = "OUT_DATA")
+    @JsonProperty("OUT_DATA")
     private T outData;
 
     public OutBody() {
