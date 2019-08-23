@@ -35,13 +35,9 @@ spring:
         #生产者
         log-out-put:
           destination: server-log
-#          content-type: application/json
-#          default-binder: server-log
         #消费者
         log-in-put:
           destination: server-log
-#            content-type: application/json
-#            default-binder: server-log
 
 
 
@@ -50,6 +46,8 @@ spring:
   rabbitmq:
     host: localhost
     port: 5672
+    username: guest
+    password: guest
 
 #开启自动刷新（配置中心的自动刷新）
 #改成bus-refresh则为消息总线方式，消息总线方式理论来说应调用服务端，但是实际上调用任意一个都能达到所有同步

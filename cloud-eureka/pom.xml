@@ -10,12 +10,7 @@
     <artifactId>cloud-eureka</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cloud-eureka</name>
-    <description>Demo project for Spring Boot</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
-    </properties>
+    <description>eureka-server</description>
 
     <dependencies>
         <!--    eureka注册中心服务，只需要引这个依赖就够了    -->
@@ -24,19 +19,6 @@
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
     </dependencies>
-
-    <!--  这个配置是指定cloud依赖版本，维护常用组件的版本依赖，防止自己瞎引用导致冲突  -->
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>
