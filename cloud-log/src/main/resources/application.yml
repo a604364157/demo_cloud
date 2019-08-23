@@ -1,1 +1,32 @@
+server:
+  port: 10009
 
+spring:
+  application:
+    name: cloud-log
+
+  #mq的配置，默认配置，不配也是这个
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  cloud:
+    #stream配置（日志信息消费）
+    stream:
+      default-binder: server-log
+      binders:
+        server-log:
+          type: rabbit
+      #消费者配置
+      bindings:
+        log-in-put:
+          destination: server-log
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:10000/eureka/

@@ -32,6 +32,7 @@
         <module>cloud-config</module>
         <module>cloud-common</module>
         <module>cloud-auth</module>
+        <module>cloud-log</module>
     </modules>
 
     <dependencies>

@@ -6,7 +6,7 @@ import org.springframework.messaging.MessageChannel;
 /**
  * @author jiangjx
  */
-public interface MessageSource {
+public interface LogMessageSource {
 
     String LOG_OUT_PUT = "log-out-put";
 

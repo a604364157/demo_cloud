@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author jiangjx
  */
-@SpringBootApplication(scanBasePackages = "com.jjx.cloudcommon")
+@SpringBootApplication
 public class CloudLogApplication {
 
     public static void main(String[] args) {

@@ -3,7 +3,7 @@ package com.jjx.cloudcommon.aop;
 import com.alibaba.fastjson.JSON;
 import com.jjx.cloudcommon.annotation.ParamLog;
 import com.jjx.cloudcommon.constant.Constants;
-import com.jjx.cloudcommon.msg.MessageProducer;
+import com.jjx.cloudcommon.msg.LogMessageProducer;
 import com.jjx.cloudcommon.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,13 +12,23 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
  * 这里说明一下
+ * common包集成了redis，rabbitMQ（写说明的时候，之后可能还会添加其他）
+ * 所以，其他应用引用到common，并且开启了common包扫描后，引用需要添加
+ * 两者的相关配置，就我的设计而言，我开启的扫描后，肯定是会用到这两者的，
+ * 所以我会配置。本身的配置并没有写到common包内，避免和引用产生冲突
+ * 原则上，如果不配置，在spring cloud环境下，会使用默认配置
+ * 但是如果你的redis，rabbit没安装，没启动，地址和密码什么的不是默认的
+ * 就会一直报错，可能导致服务启动不了，所以要注意一下
+ * <p>
+ * 这样虽然会对应用产生一些强耦的依赖注入，但是也是在设计上实现的公共功能
+ *
+ * <p>
  * 这个AOP增强是用作日志记录的
  * Around("execution(* com.jjx.*.controller..*.*(..))")
  * 是切入到所有的controller包下的函数。
@@ -32,6 +42,7 @@ import java.util.Date;
  * <p>
  * 本功能还启用了spring-cloud-stream-binder-rabbit 整合stream和rabbitMQ
  * 产生的日志也是通过消息发送，然后给消费者
+ * 如果要发消息，需要函数打上ParamLog注解
  * <p>
  * 因为是公共包，日志消息的的生产者配置在本包写死了。
  * 生产者的管道channel名称只能是（log-out-put）
@@ -47,11 +58,10 @@ import java.util.Date;
 @Slf4j
 @Aspect
 @Configuration
-@EnableScheduling
 public class LogAspect {
 
     @Autowired
-    private MessageProducer producer;
+    private LogMessageProducer producer;
 
     @Around("execution(* com.jjx.*.controller..*.*(..))")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
