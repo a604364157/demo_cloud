@@ -36,6 +36,16 @@ spring:
         log-out-put:
           destination: server-log
 
+  #链路跟踪的配置
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1.0 #采样比，1.0全部，默认为0.1
+  zipkin:
+    base-url: http://localhost:9411/ #zipkin服务地址
+
   #mq的配置，默认配置，不配也是这个
   rabbitmq:
     host: localhost

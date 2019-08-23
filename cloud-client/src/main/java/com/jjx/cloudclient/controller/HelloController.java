@@ -52,6 +52,9 @@ public class HelloController implements IHelloApi {
      * <p>
      * 可以使用get（/actuator/httptrace）【前提配置 bus.trace.enabled=true】
      * 来看消息总线的日志
+     *
+     * 应用也增加了zipkin进行链路跟踪
+     * 使用localhost:9411/zipkin/来进入服务管理页面
      */
     @Value("${name}")
     private String name;
