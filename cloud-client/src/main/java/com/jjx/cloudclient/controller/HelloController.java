@@ -1,14 +1,12 @@
 package com.jjx.cloudclient.controller;
 
-import com.jjx.cloudclient.msg.MessageConsumer;
 import com.jjx.cloudclientapi.dto.HelloInDTO;
 import com.jjx.cloudclientapi.dto.HelloOutDTO;
 import com.jjx.cloudclientapi.inter.IHelloApi;
-import com.jjx.cloudcommom.annotation.ParamLog;
-import com.jjx.cloudcommom.dto.InDTO;
-import com.jjx.cloudcommom.dto.OutDTO;
+import com.jjx.cloudcommon.annotation.ParamLog;
+import com.jjx.cloudcommon.dto.InDTO;
+import com.jjx.cloudcommon.dto.OutDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,4 +1,4 @@
-package com.jjx.cloudcommom.msg;
+package com.jjx.cloudcommon.msg;
 
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;

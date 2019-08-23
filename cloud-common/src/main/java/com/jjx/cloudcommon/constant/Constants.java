@@ -1,4 +1,4 @@
-package com.jjx.cloudcommom.constant;
+package com.jjx.cloudcommon.constant;
 
 /**
  * @author jiangjx

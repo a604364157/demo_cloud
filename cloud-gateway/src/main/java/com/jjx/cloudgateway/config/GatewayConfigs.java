@@ -2,7 +2,7 @@ package com.jjx.cloudgateway.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jjx.cloudcommom.dto.InDTO;
+import com.jjx.cloudcommon.dto.InDTO;
 import com.jjx.cloudgateway.filter.ElapsedFilter;
 import com.jjx.cloudgateway.filter.ElapsedGatewayFilterFactory;
 import com.jjx.cloudgateway.filter.RateLimitByCpuGatewayFilter;

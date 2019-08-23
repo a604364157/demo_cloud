@@ -2,7 +2,7 @@ package com.jjx.cloudgateway.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jjx.cloudcommom.dto.InDTO;
+import com.jjx.cloudcommon.dto.InDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;

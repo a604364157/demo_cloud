@@ -1,4 +1,4 @@
-package com.jjx.cloudcommom.dto;
+package com.jjx.cloudcommon.dto;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;

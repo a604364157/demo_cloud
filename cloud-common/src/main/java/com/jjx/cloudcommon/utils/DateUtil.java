@@ -1,4 +1,4 @@
-package com.jjx.cloudcommom.utils;
+package com.jjx.cloudcommon.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

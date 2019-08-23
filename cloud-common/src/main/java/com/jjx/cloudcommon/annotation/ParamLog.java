@@ -1,4 +1,4 @@
-package com.jjx.cloudcommom.annotation;
+package com.jjx.cloudcommon.annotation;
 
 import org.springframework.stereotype.Component;
 

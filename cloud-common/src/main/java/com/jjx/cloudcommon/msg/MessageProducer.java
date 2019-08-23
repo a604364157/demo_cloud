@@ -1,4 +1,4 @@
-package com.jjx.cloudcommom.msg;
+package com.jjx.cloudcommon.msg;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
