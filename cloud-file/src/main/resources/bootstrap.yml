@@ -2,6 +2,13 @@ server:
   port: 10005
 
 spring:
+
+  servlet:
+    #上传文件的配置，网关必须配置
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 10MB
+
   application:
     name: cloud-file
   #链路跟踪的配置
@@ -10,9 +17,12 @@ spring:
       client:
         enabled: true
     sampler:
-      probability: 1.0 #采样比，1.0全部，默认为0.1
+      #采样比，1.0全部，默认为0.1
+      probability: 1.0
   zipkin:
-    base-url: http://localhost:9411/ #zipkin服务地址
+    #zipkin服务地址
+    base-url: http://localhost:9411/
+    enabled: true
 
 eureka:
   instance:
@@ -20,3 +30,10 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:10000/eureka/
+
+
+logging:
+  level:
+    root: info
+    org.springframework.cloud.openfeign: debug
+  file: logs/file.log

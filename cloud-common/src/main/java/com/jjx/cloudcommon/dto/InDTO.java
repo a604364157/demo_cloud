@@ -1,8 +1,8 @@
 package com.jjx.cloudcommon.dto;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -18,8 +18,25 @@ public class InDTO<T> implements Serializable {
     @JsonProperty("ROOT")
     private HeaderBody<T> headerBody;
 
-    public InDTO() {
-        this.headerBody = new HeaderBody<>();
+    public HeaderBody<T> getHeaderBody() {
+        return headerBody;
+    }
+
+    public void setHeaderBody(HeaderBody<T> headerBody) {
+        this.headerBody = headerBody;
+    }
+
+    public static <T> InDTO<T> body(T t) {
+        InDTO<T> in = new InDTO<>();
+        in.setBody(t);
+        return in;
+    }
+
+    public static <T> InDTO<T> headerBody(Header header, T t) {
+        InDTO<T> in = new InDTO<>();
+        in.setHeader(header);
+        in.setBody(t);
+        return in;
     }
 
     private void createHeaderBody() {
@@ -28,40 +45,38 @@ public class InDTO<T> implements Serializable {
         }
     }
 
-    private HeaderBody<T> getHeaderBody() {
-        return this.headerBody;
-    }
-
-    public void setHeaderBody(HeaderBody<T> headerBody) {
-        this.headerBody = headerBody;
-    }
-
+    @JsonIgnore
+    @JSONField(serialize = false)
     public T getBody() {
         createHeaderBody();
         return this.headerBody.getBody();
     }
 
+    @JsonIgnore
+    @JSONField(serialize = false)
     public void setBody(T t) {
         createHeaderBody();
         this.headerBody.setBody(t);
-        this.setHeaderBody(headerBody);
     }
 
-    public void setHeader(JSONObject header) {
-        createHeaderBody();
-        JSONObject newHeader = header;
-        if (this.getHeader() == null) {
-            newHeader = new JSONObject();
-            if (header != null) {
-                newHeader.putAll(header);
-            }
-        }
-        this.getHeaderBody().setHeader(newHeader);
-    }
-
-    public JSONObject getHeader() {
+    @JsonIgnore
+    @JSONField(serialize = false)
+    public Header getHeader() {
         createHeaderBody();
         return this.headerBody.getHeader();
+    }
+
+    @JsonIgnore
+    @JSONField(serialize = false)
+    public void setHeader(Header header) {
+        createHeaderBody();
+        if (header == null) {
+            return;
+        }
+        if (this.getHeader() != null) {
+            header.putAll(this.getHeader());
+        }
+        this.headerBody.setHeader(header);
     }
 
     @Override

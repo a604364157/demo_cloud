@@ -2,6 +2,7 @@ package com.jjx.cloudgateway.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jjx.cloudcommon.dto.Header;
 import com.jjx.cloudcommon.dto.InDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -111,7 +112,7 @@ public class StandardParamFilter implements GlobalFilter, Ordered {
         InDTO<JSONObject> in = new InDTO<>();
         in.setBody(body);
         //这里可以添加一些公共信息，登录工号信息，客户端信息等（从session和请求头获取）
-        in.setHeader(new JSONObject());
+        in.setHeader(new Header());
         return JSON.toJSONString(in);
     }
 

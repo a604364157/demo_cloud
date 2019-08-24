@@ -1,6 +1,5 @@
 package com.jjx.cloudcommon.dto;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,7 +17,7 @@ public class HeaderBody<T> implements Serializable {
     private T body;
     @JSONField(name = "HEADER")
     @JsonProperty("HEADER")
-    private JSONObject header;
+    private Header header;
 
     public T getBody() {
         return this.body;
@@ -28,11 +27,11 @@ public class HeaderBody<T> implements Serializable {
         this.body = body;
     }
 
-    public JSONObject getHeader() {
+    public Header getHeader() {
         return this.header;
     }
 
-    public void setHeader(JSONObject header) {
+    public void setHeader(Header header) {
         this.header = header;
     }
 }

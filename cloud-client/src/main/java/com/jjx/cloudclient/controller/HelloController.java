@@ -1,12 +1,15 @@
 package com.jjx.cloudclient.controller;
 
-import com.jjx.cloudclientapi.dto.HelloInDTO;
-import com.jjx.cloudclientapi.dto.HelloOutDTO;
-import com.jjx.cloudclientapi.inter.IHelloApi;
+import com.alibaba.fastjson.JSON;
+import com.jjx.cloudclient.api.dto.HelloInDTO;
+import com.jjx.cloudclient.api.dto.HelloOutDTO;
+import com.jjx.cloudclient.api.inter.IHelloApi;
+import com.jjx.cloudclient.feign.IFileApi;
 import com.jjx.cloudcommon.annotation.ParamLog;
 import com.jjx.cloudcommon.dto.InDTO;
 import com.jjx.cloudcommon.dto.OutDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,13 +61,18 @@ public class HelloController implements IHelloApi {
      */
     @Value("${name}")
     private String name;
+    @Autowired
+    private IFileApi fileApi;
 
     @Override
     @ParamLog
     public OutDTO<HelloOutDTO> hello(@RequestBody InDTO<HelloInDTO> in) {
         String name = Optional.ofNullable(in).map(InDTO::getBody).map(HelloInDTO::getName).orElse("");
         HelloOutDTO out = new HelloOutDTO();
-        out.setMsg("hello " + name);
+        InDTO<String> param = new InDTO<>();
+        param.setBody("hello " + name);
+        OutDTO<String> dto = fileApi.test(param);
+        out.setMsg(dto.getData());
         return OutDTO.build(out);
     }
 

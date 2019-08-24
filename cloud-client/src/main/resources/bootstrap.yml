@@ -42,9 +42,12 @@ spring:
       client:
         enabled: true
     sampler:
-      probability: 1.0 #采样比，1.0全部，默认为0.1
+      #采样比，1.0全部，默认为0.1
+      probability: 1.0
   zipkin:
-    base-url: http://localhost:9411/ #zipkin服务地址
+    #zipkin服务地址
+    base-url: http://localhost:9411
+    enabled: true
 
   #mq的配置，默认配置，不配也是这个
   rabbitmq:
@@ -61,6 +64,10 @@ management:
       exposure:
         include: refresh
 
+ribbon:
+  ReadTimeout: 3000
+  ConnectTimeout: 3000
+
 eureka:
   instance:
     hostname: localhost
@@ -71,4 +78,5 @@ eureka:
 logging:
   level:
     root: info
+    org.springframework.cloud.openfeign: debug
   file: logs/client.log

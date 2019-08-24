@@ -2,6 +2,7 @@ package com.jjx.cloudgateway.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jjx.cloudcommon.dto.Header;
 import com.jjx.cloudcommon.dto.InDTO;
 import com.jjx.cloudgateway.filter.ElapsedFilter;
 import com.jjx.cloudgateway.filter.ElapsedGatewayFilterFactory;
@@ -120,7 +121,7 @@ public class GatewayConfigs {
             InDTO<JSONObject> in = new InDTO<>();
             in.setBody(body);
             //这里可以添加一些公共信息，登录工号信息，客户端信息等（从session和请求头获取）
-            in.setHeader(new JSONObject());
+            in.setHeader(new Header());
             return JSON.toJSONString(in);
         } else {
             return bodyStr;

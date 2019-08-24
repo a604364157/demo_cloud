@@ -33,6 +33,8 @@
         <module>cloud-common</module>
         <module>cloud-auth</module>
         <module>cloud-log</module>
+        <module>cloud-file</module>
+        <module>cloud-file-api</module>
     </modules>
 
     <dependencies>

@@ -1,4 +1,4 @@
-package com.jjx.cloudclientapi.dto;
+package com.jjx.cloudclient.api.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

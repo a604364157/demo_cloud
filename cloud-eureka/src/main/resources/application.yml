@@ -4,6 +4,8 @@ server:
 eureka:
   instance:
     hostname: localhost
+  server:
+    enable-self-preservation: false #关闭自我保护（本地测试，不关重启一个服务等半天才生效）
   client:
     registerWithEureka: false #禁止本身注册为客户端
     fetchRegistry: false  #禁止注册中心拉取服务

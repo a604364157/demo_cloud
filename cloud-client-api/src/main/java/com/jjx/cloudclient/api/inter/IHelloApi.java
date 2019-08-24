@@ -1,8 +1,8 @@
-package com.jjx.cloudclientapi.inter;
+package com.jjx.cloudclient.api.inter;
 
-import com.jjx.cloudclientapi.common.Constant;
-import com.jjx.cloudclientapi.dto.HelloInDTO;
-import com.jjx.cloudclientapi.dto.HelloOutDTO;
+import com.jjx.cloudclient.api.common.Constant;
+import com.jjx.cloudclient.api.dto.HelloInDTO;
+import com.jjx.cloudclient.api.dto.HelloOutDTO;
 import com.jjx.cloudcommon.dto.InDTO;
 import com.jjx.cloudcommon.dto.OutDTO;
 import io.swagger.annotations.Api;
@@ -22,8 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author jiangjx
  */
 @Api(tags = "测试接口")
-@RequestMapping("client")
-@FeignClient(name = Constant.CLIENT_SERVICE_ID)
+@RequestMapping(Constant.SERVICE_PREFIX)
 public interface IHelloApi {
 
     /**
@@ -32,8 +31,8 @@ public interface IHelloApi {
      * @param in 入参
      * @return 出参
      */
+    @ApiOperation("测试")
     @PostMapping("hello")
-    @ApiOperation("测试接口")
     OutDTO<HelloOutDTO> hello(@RequestBody InDTO<HelloInDTO> in);
 
     /**
@@ -41,8 +40,8 @@ public interface IHelloApi {
      *
      * @return 出参
      */
+    @ApiOperation("测试")
     @GetMapping("hello")
-    @ApiOperation("测试接口")
     String hello();
 
     /**
@@ -52,7 +51,7 @@ public interface IHelloApi {
      * @param count 次数
      * @return 次数
      */
+    @ApiOperation("测试")
     @GetMapping("exCount")
-    @ApiOperation("测试接口")
     int exCount(@RequestParam("key") String key, @RequestParam(name = "count", defaultValue = "3") int count);
 }

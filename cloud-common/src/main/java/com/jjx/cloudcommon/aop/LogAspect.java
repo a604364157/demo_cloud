@@ -75,14 +75,13 @@ public class LogAspect {
         }
         Signature s = joinPoint.getSignature();
         String now = DateUtil.getDateStr(new Date(), DateUtil.DATE_MODEL_2);
-        String logStr = now + "：" + s.toString() + "运行耗时：" + (t2 - t1) + " 入参：" + JSON.toJSONString(objects);
-        log.info(logStr);
         Method method;
         try {
             method = joinPoint.getTarget().getClass().getMethod(s.getName(), argTypes);
             ParamLog paramLog = method.getAnnotation(ParamLog.class);
             if (paramLog != null) {
                 if (Constants.Y.equals(paramLog.value())) {
+                    String logStr = now + "：" + s.toString() + "运行耗时：" + (t2 - t1) + " 入参：" + JSON.toJSONString(objects);
                     producer.sendMsg(logStr);
                 }
             }
