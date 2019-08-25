@@ -1,6 +1,5 @@
 package com.jjx.cloudclient.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.jjx.cloudclient.api.dto.HelloInDTO;
 import com.jjx.cloudclient.api.dto.HelloOutDTO;
 import com.jjx.cloudclient.api.inter.IHelloApi;
@@ -9,7 +8,6 @@ import com.jjx.cloudcommon.annotation.ParamLog;
 import com.jjx.cloudcommon.dto.InDTO;
 import com.jjx.cloudcommon.dto.OutDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,14 +53,36 @@ public class HelloController implements IHelloApi {
      * <p>
      * 可以使用get（/actuator/httptrace）【前提配置 bus.trace.enabled=true】
      * 来看消息总线的日志
-     *
-     * 应用也增加了zipkin进行链路跟踪
+     * <p>
+     * 应用也增加了sleuth+zipkin进行链路跟踪
      * 使用localhost:9411/zipkin/来进入服务管理页面
+     * <p>
+     * 值得一提的是，因为我们在依赖中已经使用了rabbitMQ做消息总线，日志收集
+     * 而且是引入的spring-cloud-stream-binder-rabbit依赖
+     * 我们再引入spring-cloud-starter-sleuth和spring-cloud-starter-zipkin
+     * 应用会自动进行整合。我们配置了rabbitmq后，zipkin直接配置一个路径
+     * 就没有任何用处了，因为采集的日志已经通过mq发送了，不再直接送往配置的zipkin地址
+     * <p>
+     * zipkin新的版本已不再支持自建服务器了，而实直接给编译好的jar文件来用
+     * 用是挺好用，就是启动的参数配置就麻烦了。需要在启动命令后给相应的参数用于修改jar包里的默认配置
+     * 我们最好写一个启动脚本来启动zipkin服务。
+     * <p>
+     * 因为我们的客户端已经集成了rabbitmq，所以服务端也必须集成，不然没有办法收到调用链的消息。
+     * 所以我们启动的时候需要修改参数，是服务端连上mq
+     * java -jar zipkin.jar --zipkin.collector.rabbitmq.addresses=localhost
+     * 就这样去启动，就能连上本地的rabbitmq,
+     * 当然我没改什么，所以我这样启动需要mq的端口，口令是默认的才行
+     * 而且mq的消息队列名（zipkin）也得是默认的才行
+     * 这些东西修改了，都要相应的在服务端和客户端修改对应的配置才可以
      */
     @Value("${name}")
     private String name;
-    @Autowired
-    private IFileApi fileApi;
+
+    private final IFileApi fileApi;
+
+    public HelloController(IFileApi fileApi) {
+        this.fileApi = fileApi;
+    }
 
     @Override
     @ParamLog
