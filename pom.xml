@@ -27,6 +27,7 @@
     <modules>
         <module>cloud-eureka</module>
         <module>cloud-gateway</module>
+        <module>cloud-zuul</module>
         <module>cloud-client</module>
         <module>cloud-client-api</module>
         <module>cloud-config</module>
