@@ -23,26 +23,38 @@ spring:
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
     tomcat:
-      initial-size: 1 #³õÊ¼»¯Á¬½Ó´óĞ¡
-      min-idle: 3 #×îĞ¡Á¬½ÓÁ¿
-      max-active: 20 #×î´óÁ¬½ÓÁ¿
-      max-wait: 60000 #»ñÈ¡Á¬½Ó×î´óµÈ´ıÊ±¼ä
-      time-between-eviction-runs-millis: 60000 #¹Ø±Õ¿Õ°×Á¬½ÓµÄ¼ì²âÊ±¼ä¼ä¸ô
-      min-evictable-idle-time-millis: 300000 #Á¬½ÓµÄ×îĞ¡Éú´æÊ±¼ä
-      validation-query: SELECT 1 FROM DUAL #²âÊÔÁ¬½ÓÓï¾ä
-      test-while-idle: true #ÉêÇëÁ¬½Ó¼ì²é
-      test-on-borrow: false #Ö´ĞĞÁ¬½Ó¼ì²é
-      test-on-return: false #¹é»¹Á¬½Ó¼ì²é
+      #åˆå§‹åŒ–è¿æ¥å¤§å°
+      initial-size: 1
+      #æœ€å°è¿æ¥é‡
+      min-idle: 3
+      #æœ€å¤§è¿æ¥é‡
+      max-active: 20
+      #è·å–è¿æ¥æœ€å¤§ç­‰å¾…æ—¶é—´
+      max-wait: 60000
+      #å…³é—­ç©ºç™½è¿æ¥çš„æ£€æµ‹æ—¶é—´é—´éš”
+      time-between-eviction-runs-millis: 60000
+      #è¿æ¥çš„æœ€å°ç”Ÿå­˜æ—¶é—´
+      min-evictable-idle-time-millis: 300000
+      #æµ‹è¯•è¿æ¥è¯­å¥
+      validation-query: SELECT 1 FROM DUAL
+      #ç”³è¯·è¿æ¥æ£€æŸ¥
+      test-while-idle: true
+      #æ‰§è¡Œè¿æ¥æ£€æŸ¥
+      test-on-borrow: false
+      #å½’è¿˜è¿æ¥æ£€æŸ¥
+      test-on-return: false
 
 mybatis:
   type-aliases-package: com.jjx.cloudauth.pojo
   mapper-locations: classpath:mapper/*.xml
   configuration:
-    map-underscore-to-camel-case: true #¿ªÆôÍÕ·åÃüÃû
+    #å¼€å¯é©¼å³°å‘½å
+    map-underscore-to-camel-case: true
     jdbc-type-for-null: NUll
     lazy-loading-enabled: true
     aggressive-lazy-loading: true
-    cache-enabled: true #¿ªÆô¶ş¼¶»º´æ
+    #å¼€å¯äºŒçº§ç¼“å­˜
+    cache-enabled: true
     call-setters-on-nulls: true
 
 eureka:
@@ -52,3 +64,7 @@ eureka:
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:10000/eureka/
 
+security:
+  oauth2:
+    authorization:
+      check-token-access: true
