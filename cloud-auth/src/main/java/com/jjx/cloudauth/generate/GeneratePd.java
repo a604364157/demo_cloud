@@ -1,18 +1,13 @@
 package com.jjx.cloudauth.generate;
 
-import com.alibaba.druid.pool.DruidDataSourceC3P0Adapter;
-import com.alibaba.druid.util.JdbcUtils;
+import com.jjx.cloudauth.generate.utils.CommonUtil;
 
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author jiangjx
@@ -34,10 +29,10 @@ public class GeneratePd {
     }
 
     private static void generate(String url, String user, String password, String dbName, String tableName, String root, String pojoPack, String daoPack) {
+        List<Map<String, Object>> list = CommonUtil.queryTable(tableName, user, password, url);
         GeneratePd pd = new GeneratePd();
-        List<Map<String, Object>> list = pd.queryTable(tableName, user, password, url);
-        pd.generatePojo(root, pojoPack, pd.first2Up(pd.str2Ca(tableName)), dbName, list);
-        pd.generateDao(root, daoPack, pojoPack + "." + pd.first2Up(pd.str2Ca(tableName)));
+        pd.generatePojo(root, pojoPack, CommonUtil.first2Up(CommonUtil.str2Ca(tableName)), dbName, list);
+        pd.generateDao(root, daoPack, pojoPack + "." + CommonUtil.first2Up(CommonUtil.str2Ca(tableName)));
     }
 
     private void generatePojo(String root, String pack, String className, String dbName, List<Map<String, Object>> fields) {
@@ -69,11 +64,11 @@ public class GeneratePd {
         list.add("public class " + className + " extends BaseModeByKeyId<" + className + "> {\n\n");
         list.add("\tprivate static final long serialVersionUID = 1L;\n");
         for (Map<String, Object> field : fields) {
-            String fieldName = str2Ca(String.valueOf(field.get("Field")));
+            String fieldName = CommonUtil.str2Ca(String.valueOf(field.get("Field")));
             String fieldType = String.valueOf(field.get("Type"));
             String tmp = "\t@TableCol(dataType = DbDataType." + getType(fieldType) + ", maxLen = " + getLength(fieldType) + ", memo = \"\")\n";
             list.add(tmp);
-            String fieldTmp = "\tprivate " + getFieldType(fieldType) + " " + str2Ca(fieldName) + ";\n\n";
+            String fieldTmp = "\tprivate " + getFieldType(fieldType) + " " + CommonUtil.str2Ca(fieldName) + ";\n\n";
             list.add(fieldTmp);
         }
         list.add("}");
@@ -237,59 +232,6 @@ public class GeneratePd {
         list.add("\t}\n\n");
         list.add("}");
         return list;
-    }
-
-    private Pattern humpPattern = Pattern.compile("[A-Z]");
-
-    private String ca2str(String str) {
-        Matcher matcher = humpPattern.matcher(str);
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(sb, "_" + matcher.group(0).toLowerCase());
-        }
-        matcher.appendTail(sb);
-        return sb.toString();
-    }
-
-    private Pattern p = Pattern.compile("_[a-z]");
-
-    private String str2Ca(String str) {
-        Matcher matcher = p.matcher(str);
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
-            String t = matcher.group(0);
-            matcher.appendReplacement(sb, t.substring(1).toUpperCase());
-        }
-        matcher.appendTail(sb);
-        return sb.toString();
-    }
-
-    private String first2Up(String str) {
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
-    }
-
-    private List<Map<String, Object>> queryTable(String tableName, String user, String password, String url) {
-        DataSource dataSource = crateDateSource(user, password, url);
-        String sql = "DESC " + tableName;
-        List<Map<String, Object>> list;
-        try {
-            list = JdbcUtils.executeQuery(dataSource, sql, new ArrayList<>());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("查询表模型失败");
-        }
-        //截掉公共的字段
-        list.subList(0, 9).clear();
-        return list;
-    }
-
-    private DataSource crateDateSource(String user, String password, String url) {
-        DruidDataSourceC3P0Adapter source = new DruidDataSourceC3P0Adapter();
-        source.setDriverClass("com.mysql.jdbc.Driver");
-        source.setUser(user);
-        source.setPassword(password);
-        source.setJdbcUrl(url);
-        return source;
     }
 
 }
