@@ -22,8 +22,20 @@ spring:
 ribbon:
   eureka:
     enabled: true
+  #这个是重试和超时时间
+  MaxAutoRetries: 3
+  MaxAutoRetriesNextServer: 0
+  ConnectTimeout: 500
+  ReadTimeout: 5000
+
+
 #静态路由配置(服务ID不分大小写)
 zuul:
+  host:
+    connect-timeout-millis: 8000
+    socket-timeout-millis: 6000
+  retryable: true
+
   routes:
     cloud-client-1:
       path: /cloud-client-1/**
@@ -38,14 +50,18 @@ zuul:
     default-policy-list:
       #这个配置是每10秒只能请求10次，且时间长度不能大于1秒
       - limit: 10
-        quota: 1
+        quota: 10
         refresh-interval: 10
+        #限流类型（user,origin,url）
+        type:
+          - url
     policy-list:
       #单个应用(下面这个配置需要和serviceId相同或者与配置的路由前缀相同，测试的时候要和全局分开)
       cloud-client-1:
         - limit: 1
           quota: 1
           refresh-interval: 3
+
 
 eureka:
   instance:
