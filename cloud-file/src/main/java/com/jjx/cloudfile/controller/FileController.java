@@ -26,7 +26,7 @@ import java.util.UUID;
 /**
  * @author jiangjx
  */
-@RestController(Constant.SERVICE_PREFIX)
+@RestController
 public class FileController implements IFileApi {
 
     @Override
