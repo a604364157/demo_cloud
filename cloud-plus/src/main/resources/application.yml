@@ -12,30 +12,30 @@ spring:
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
     tomcat:
-      #³õÊ¼»¯Á¬½Ó´óĞ¡
+      #åˆå§‹åŒ–è¿æ¥å¤§å°
       initial-size: 1
-      #×îĞ¡Á¬½ÓÁ¿
+      #æœ€å°è¿æ¥é‡
       min-idle: 3
-      #×î´óÁ¬½ÓÁ¿
+      #æœ€å¤§è¿æ¥é‡
       max-active: 20
-      #»ñÈ¡Á¬½Ó×î´óµÈ´ıÊ±¼ä
+      #è·å–è¿æ¥æœ€å¤§ç­‰å¾…æ—¶é—´
       max-wait: 60000
-      #¹Ø±Õ¿Õ°×Á¬½ÓµÄ¼ì²âÊ±¼ä¼ä¸ô
+      #å…³é—­ç©ºç™½è¿æ¥çš„æ£€æµ‹æ—¶é—´é—´éš”
       time-between-eviction-runs-millis: 60000
-      #Á¬½ÓµÄ×îĞ¡Éú´æÊ±¼ä
+      #è¿æ¥çš„æœ€å°ç”Ÿå­˜æ—¶é—´
       min-evictable-idle-time-millis: 300000
-      #²âÊÔÁ¬½ÓÓï¾ä
+      #æµ‹è¯•è¿æ¥è¯­å¥
       validation-query: SELECT 1 FROM DUAL
-      #ÉêÇëÁ¬½Ó¼ì²é
+      #ç”³è¯·è¿æ¥æ£€æŸ¥
       test-while-idle: true
-      #Ö´ĞĞÁ¬½Ó¼ì²é
+      #æ‰§è¡Œè¿æ¥æ£€æŸ¥
       test-on-borrow: false
-      #¹é»¹Á¬½Ó¼ì²é
+      #å½’è¿˜è¿æ¥æ£€æŸ¥
       test-on-return: false
 
 mybatis-plus:
-    # ´Ë´¦ÓĞ¿Ó µ¥Ä£¿é¼ÓÔØÒ²ĞèÒªÅäÖÃ*(classpath ½ô°¤×ÅµÄĞÇ) ½â¾ö×Ô¶¨ÒåSQLÎŞ·¨Ö´ĞĞ
-    mapper-locations: classpath*:mapper/*/*Mapper.xml
+  # æ­¤å¤„æœ‰å‘ å•æ¨¡å—åŠ è½½ä¹Ÿéœ€è¦é…ç½®*(classpath ç´§æŒ¨ç€çš„æ˜Ÿ) è§£å†³è‡ªå®šä¹‰SQLæ— æ³•æ‰§è¡Œ
+  mapper-locations: classpath:com/jjx/cloudplus/mapper/*/*Mapper.xml
 
 eureka:
   instance:

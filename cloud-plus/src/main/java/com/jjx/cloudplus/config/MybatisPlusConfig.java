@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author jiangjx
  */
 @Configuration
-@MapperScan("com.jjx")
 @EnableTransactionManagement
 public class MybatisPlusConfig {
 

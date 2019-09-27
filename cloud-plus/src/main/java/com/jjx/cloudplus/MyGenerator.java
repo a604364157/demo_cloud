@@ -16,7 +16,7 @@ public class MyGenerator {
     /**
      * 生成文件所在项目路径
      */
-    private static String baseProjectPath = "E:\\workspaces\\demo\\demo_cloud\\cloud-plus";
+    private static String projectPath = "cloud-plus";
     /**
      * 基本包名
      */
@@ -41,6 +41,10 @@ public class MyGenerator {
 
 
     public static void main(String[] args) {
+        String baseProjectPath = System.getProperty("user.dir");
+        if (projectPath != null && !"".equals(projectPath)) {
+            baseProjectPath = baseProjectPath + "/" + projectPath;
+        }
         AutoGenerator gen = new AutoGenerator();
         /*
          * 数据库配置
@@ -72,9 +76,9 @@ public class MyGenerator {
                 .setOpen(false)
                 .setAuthor(authorName)
                 // 自定义文件命名，注意 %s 会自动填充表实体属性！
-                .setMapperName("%sMapper")
-                .setXmlName("%sMapper")
-                .setServiceName("%sService")
+                .setMapperName("I%sMapper")
+                .setXmlName("I%sMapper")
+                .setServiceName("I%sService")
                 .setServiceImplName("%sServiceImpl")
                 .setControllerName("%sController")
         );
