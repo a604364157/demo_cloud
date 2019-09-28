@@ -1,0 +1,46 @@
+package $!{mapperPackage};
+
+import $!{entityPackage};
+import java.util.List;
+
+/**
+ * @author $!{author}
+ */
+public interface $!{Entity}Mapper {
+
+    /**
+     * 根据传入条件获取数据数量
+     * @return 条目数
+     */
+    long countByEntity($!{Entity} $!{entity});
+
+    /**
+     * 根据传入条件获取数据
+     * @return 数据集和
+     */
+    List<$!{Entity}> selectByEntity($!{Entity} $!{entity});
+
+    /**
+     * 根据主键查询数据
+     * @return 数据实体
+     */
+    $!{Entity} selectByKey($!{keyType} $!{key});
+
+    /**
+     * 写入数据
+     * @return 写入条数
+     */
+    int insert($!{Entity} $!{entity});
+
+    /**
+     * 修改数据
+     * @return 写入条数
+     */
+    int updateByKey($!{Entity} $!{entity});
+
+    /**
+     * 删除数据
+     * @return 写入条数
+     */
+    int deleteByKey($!{keyType} $!{key});
+}

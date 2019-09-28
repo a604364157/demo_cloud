@@ -5,7 +5,7 @@ spring:
   application:
     name: cloud-log
 
-  #mqµÄÅäÖÃ£¬Ä¬ÈÏÅäÖÃ£¬²»ÅäÒ²ÊÇÕâ¸ö
+  #mqçš„é…ç½®ï¼Œé»˜è®¤é…ç½®ï¼Œä¸é…ä¹Ÿæ˜¯è¿™ä¸ª
   rabbitmq:
     host: localhost
     port: 5672
@@ -13,13 +13,13 @@ spring:
     password: guest
 
   cloud:
-    #streamÅäÖÃ£¨ÈÕÖ¾ĞÅÏ¢Ïû·Ñ£©
+    #streamé…ç½®ï¼ˆæ—¥å¿—ä¿¡æ¯æ¶ˆè´¹ï¼‰
     stream:
       default-binder: server-log
       binders:
         server-log:
           type: rabbit
-      #Ïû·ÑÕßÅäÖÃ
+      #æ¶ˆè´¹è€…é…ç½®
       bindings:
         log-in-put:
           destination: server-log
