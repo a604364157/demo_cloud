@@ -2,6 +2,7 @@ package com.jjx.cloudplus.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -12,6 +13,7 @@ import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -30,6 +32,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author jiangjx
@@ -55,31 +58,37 @@ public class ExcelUtil {
         if (readOnly) {
             encryption(sheet);
         }
+        CellStyle style = workBook.createCellStyle();
+        Font font = workBook.createFont();
+        font.setColor(Font.COLOR_NORMAL);
+        style.setFont(font);
         //插入需导出的数据
-        int i = 0;
-        for (Map<String, Object> map : list) {
-            XSSFRow row = sheet.createRow(i);
-            int j = 0;
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                if (i == 0) {
-                    XSSFCell cell = row.createCell(j);
-                    cell.setCellStyle(getStyle(workBook));
-                    cell.setCellValue(String.valueOf(entry.getKey()));
+        AtomicInteger i = new AtomicInteger();
+        list.forEach(map -> {
+            XSSFRow row = sheet.createRow(i.get());
+            AtomicInteger j = new AtomicInteger();
+            map.forEach((key, value) -> {
+                if (i.get() == 0) {
+                    XSSFCell cell = row.createCell(j.get());
+                    getStyle(style);
+                    cell.setCellStyle(style);
+                    cell.setCellValue(String.valueOf(key));
                 } else {
-                    XSSFCell cell = row.createCell(j);
-                    cell.setCellStyle(getStyle(workBook));
-                    cell.setCellValue(String.valueOf(entry.getValue()));
+                    XSSFCell cell = row.createCell(j.get());
+                    getStyle(style);
+                    cell.setCellStyle(style);
+                    cell.setCellValue(String.valueOf(value));
                 }
-                j++;
-            }
-            sheet.autoSizeColumn(i);
-            i++;
-        }
+                j.getAndIncrement();
+            });
+            i.getAndIncrement();
+        });
         try {
-            putWaterRemarkToExcel(workBook, sheet, "qhyf.png", 0, 0, 0, 0, 1, 1, 1, 1);
+            putWaterRemarkToExcel(workBook, sheet, "qhyf.png", 1, 1);
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
+        setPrint(sheet);
         return workBook;
     }
 
@@ -93,17 +102,23 @@ public class ExcelUtil {
             encryption(sheet);
         }
         int i = 0;
+        CellStyle style = workBook.createCellStyle();
+        Font font = workBook.createFont();
+        font.setColor(Font.COLOR_NORMAL);
+        style.setFont(font);
         for (Map<String, Object> map : list) {
             HSSFRow row = sheet.createRow(i);
             int j = 0;
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 if (i == 0) {
                     HSSFCell cell = row.createCell(j);
-                    cell.setCellStyle(getStyle(workBook));
+                    getStyle(style);
+                    cell.setCellStyle(style);
                     cell.setCellValue(String.valueOf(entry.getKey()));
                 } else {
                     HSSFCell cell = row.createCell(j);
-                    cell.setCellStyle(getStyle(workBook));
+                    getStyle(style);
+                    cell.setCellStyle(style);
                     cell.setCellValue(String.valueOf(entry.getValue()));
                 }
                 j++;
@@ -121,29 +136,34 @@ public class ExcelUtil {
         sheet.protectSheet(UUID.randomUUID().toString());
     }
 
+    private static void setPrint(Sheet sheet) {
+        //设置边框
+        sheet.setDisplayGridlines(true);
+        //设置打印的边框
+        sheet.setPrintGridlines(true);
+        //设置打印对象
+        PrintSetup printSetup = sheet.getPrintSetup();
+        //设置打印方向，横向就是true
+        printSetup.setLandscape(true);
+        //设置A4纸
+        printSetup.setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
+    }
+
     /**
      * 为Excel打上水印工具函数
      * 请自行确保参数值，以保证水印图片之间不会覆盖。
      * 在计算水印的位置的时候，并没有考虑到单元格合并的情况，请注意
      *
-     * @param wb                Excel Workbook
-     * @param sheet             需要打水印的Excel
-     * @param waterRemarkPath   水印地址，classPath，目前只支持png格式的图片，
-     *                          因为非png格式的图片打到Excel上后可能会有图片变红的问题，且不容易做出透明效果。
-     *                          同时请注意传入的地址格式，应该为类似："\\excelTemplate\\test.png"
-     * @param startXCol         水印起始列
-     * @param startYRow         水印起始行
-     * @param betweenXCol       水印横向之间间隔多少列
-     * @param betweenYRow       水印纵向之间间隔多少行
-     * @param XCount            横向共有水印多少个
-     * @param YCount            纵向共有水印多少个
-     * @param waterRemarkWidth  水印图片宽度为多少列
-     * @param waterRemarkHeight 水印图片高度为多少行
+     * @param wb              Excel Workbook
+     * @param sheet           需要打水印的Excel
+     * @param waterRemarkPath 水印地址，classPath，目前只支持png格式的图片，
+     *                        因为非png格式的图片打到Excel上后可能会有图片变红的问题，且不容易做出透明效果。
+     *                        同时请注意传入的地址格式，应该为类似："\\excelTemplate\\test.png"
+     * @param XCount          横向共有水印多少个
+     * @param YCount          纵向共有水印多少个
      * @throws IOException 异常
      */
-    public static void putWaterRemarkToExcel(Workbook wb, Sheet sheet, String waterRemarkPath, int startXCol, int startYRow,
-                                             int betweenXCol, int betweenYRow, int XCount, int YCount,
-                                             int waterRemarkWidth, int waterRemarkHeight) throws IOException {
+    private static void putWaterRemarkToExcel(Workbook wb, Sheet sheet, String waterRemarkPath, int XCount, int YCount) throws IOException {
         //校验传入的水印图片格式
         if (!waterRemarkPath.endsWith("png") && !waterRemarkPath.endsWith("PNG")) {
             throw new RuntimeException("向Excel上面打印水印，目前支持png格式的图片。");
@@ -159,6 +179,9 @@ public class ExcelUtil {
             throw new RuntimeException("向Excel上面打印水印，读取水印图片失败(2)。");
         }
         ImageIO.write(bufferImg, "png", byteArrayOut);
+        //计算宽高
+        int w = 1;
+        int h = 1;
         //开始打水印
         Drawing drawing = sheet.createDrawingPatriarch();
         //按照共需打印多少行水印进行循环
@@ -166,39 +189,34 @@ public class ExcelUtil {
             //按照每行需要打印多少个水印进行循环
             for (int xCount = 0; xCount < XCount; xCount++) {
                 //创建水印图片位置
-                int xIndexInteger = startXCol + (xCount * waterRemarkWidth) + (xCount * betweenXCol);
-                int yIndexInteger = startYRow + (yCount * waterRemarkHeight) + (yCount * betweenYRow);
+                int xIndexInteger = xCount * w;
+                int yIndexInteger = yCount * h;
                 /*
                  * 参数定义：
-                 * 第一个参数是（x轴的开始节点）；
-                 * 第二个参数是（是y轴的开始节点）；
-                 * 第三个参数是（是x轴的结束节点）；
-                 * 第四个参数是（是y轴的结束节点）；
-                 * 第五个参数是（是从Excel的第几列开始插入图片，从0开始计数）；
-                 * 第六个参数是（是从excel的第几行开始插入图片，从0开始计数）；
-                 * 第七个参数是（图片宽度，共多少列）；
+                 * 第1个参数是（x轴的开始节点）；
+                 * 第2个参数是（是y轴的开始节点）；
+                 * 第3个参数是（是x轴的结束节点）；
+                 * 第4个参数是（是y轴的结束节点）；
+                 * 第5个参数是（是从Excel的第几列开始插入图片，从0开始计数）；
+                 * 第6个参数是（是从excel的第几行开始插入图片，从0开始计数）；
+                 * 第7个参数是（图片宽度，共多少列）；
                  * 第8个参数是（图片高度，共多少行）；
                  */
-                ClientAnchor anchor = drawing.createAnchor(0, 0, Short.MAX_VALUE, Integer.MAX_VALUE, xIndexInteger, yIndexInteger, waterRemarkWidth, waterRemarkHeight);
+                ClientAnchor anchor = drawing.createAnchor(0, 0, Short.MAX_VALUE, Integer.MAX_VALUE, xIndexInteger, yIndexInteger, 0, 0);
+                anchor.setAnchorType(ClientAnchor.AnchorType.DONT_MOVE_AND_RESIZE);
                 Picture pic = drawing.createPicture(anchor, wb.addPicture(byteArrayOut.toByteArray(), Workbook.PICTURE_TYPE_PNG));
                 pic.resize();
             }
         }
     }
 
-    private static CellStyle getStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
+    private static void getStyle(CellStyle style) {
         style.setBorderBottom(BorderStyle.THIN);
         style.setBorderTop(BorderStyle.THIN);
         style.setBorderLeft(BorderStyle.THIN);
         style.setBorderRight(BorderStyle.THIN);
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
-        Font font = workbook.createFont();
-        font.setColor(Font.COLOR_NORMAL);
-        font.setFontName("仿宋");
-        style.setFont(font);
-        return style;
     }
 
     public static File workBook2File(Workbook workbook, String fileName) {
