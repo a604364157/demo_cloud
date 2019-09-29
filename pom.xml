@@ -33,19 +33,12 @@
         <module>cloud-client-api</module>
         <module>cloud-config</module>
         <module>cloud-common</module>
+        <module>cloud-web</module>
         <module>cloud-auth</module>
         <module>cloud-log</module>
         <module>cloud-file</module>
         <module>cloud-file-api</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 
     <!--  这个配置是指定cloud依赖版本，维护常用组件的版本依赖，防止自己瞎引用导致冲突  -->
     <dependencyManagement>

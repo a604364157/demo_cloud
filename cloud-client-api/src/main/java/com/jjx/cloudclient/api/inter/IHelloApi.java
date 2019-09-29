@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author jiangjx
  */
 @Api(tags = "测试接口")
+@FeignClient(Constant.SERVICE_ID)
 @RequestMapping(Constant.SERVICE_PREFIX)
 public interface IHelloApi {
 
