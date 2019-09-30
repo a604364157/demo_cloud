@@ -13,8 +13,7 @@ import java.util.concurrent.Future;
 /**
  * @author jiangjx
  */
-@Primary
-@Service
+@Service("demoService")
 public class DemoServiceImpl implements IDemoService {
 
     @Override
