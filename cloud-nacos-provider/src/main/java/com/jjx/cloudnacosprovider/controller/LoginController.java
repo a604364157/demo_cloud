@@ -30,5 +30,10 @@ public class LoginController {
         return loginService.list();
     }
 
+    @GetMapping("test")
+    public String test() {
+        return loginService.test();
+    }
+
 }
 

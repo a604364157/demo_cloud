@@ -12,5 +12,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-09-30
  */
 public interface ILoginService extends IService<Login> {
-
+    /**
+     * test
+     * @return test
+     */
+    String test();
 }

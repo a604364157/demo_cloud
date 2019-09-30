@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 /**
  * @author jiangjx
  */
+@Primary
 @Service("demoService")
 public class DemoServiceImpl implements IDemoService {
 
