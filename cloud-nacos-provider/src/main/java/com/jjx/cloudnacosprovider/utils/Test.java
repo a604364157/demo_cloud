@@ -1,4 +1,4 @@
-package com.jjx.cloudplus.utils;
+package com.jjx.cloudnacosprovider.utils;
 
 import com.alibaba.fastjson.JSONObject;
 

@@ -1,14 +1,11 @@
-package com.jjx.cloudplus.utils;
+package com.jjx.cloudnacosprovider.utils;
 
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @author jiangjx

@@ -1,4 +1,4 @@
-package com.jjx.cloudplus;
+package com.jjx.cloudnacosprovider;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
