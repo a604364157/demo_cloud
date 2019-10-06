@@ -13,4 +13,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStudentService extends IService<Student> {
 
+    /**
+     * get
+     * @param name name
+     * @return student
+     */
+    Student getByName(String name);
+
+    /**
+     * get
+     * @param name name
+     * @return student
+     */
+    Student getByName2(String name);
 }

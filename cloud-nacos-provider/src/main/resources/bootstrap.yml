@@ -41,3 +41,6 @@ spring:
       test-on-borrow: false
       #归还连接检查
       test-on-return: false
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml

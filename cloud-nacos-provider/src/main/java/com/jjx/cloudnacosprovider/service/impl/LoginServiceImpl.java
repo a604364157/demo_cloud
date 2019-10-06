@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-09-30
  */
 @RefreshScope
-@Primary
 @Service
 public class LoginServiceImpl extends ServiceImpl<ILoginMapper, Login> implements ILoginService {
 
