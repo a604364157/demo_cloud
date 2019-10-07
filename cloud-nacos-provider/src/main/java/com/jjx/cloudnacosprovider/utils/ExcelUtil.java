@@ -83,12 +83,12 @@ public class ExcelUtil {
             });
             i.getAndIncrement();
         });
-        try {
+/*        try {
             putWaterRemarkToExcel(workBook, sheet, "qhyf.png", 1, 1);
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
-        setPrint(sheet);
+        setPrint(sheet);*/
         return workBook;
     }
 
@@ -223,7 +223,7 @@ public class ExcelUtil {
         try (FileOutputStream outStream = new FileOutputStream(fileName)) {
             workbook.write(outStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
         return new File(fileName);
     }

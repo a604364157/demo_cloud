@@ -2,13 +2,13 @@ package com.jjx.cloudauth;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author jiangjx
  */
 @MapperScan("com.jjx.cloudauth.mapper")
-@SpringBootApplication
+@SpringCloudApplication
 public class CloudAuthApplication {
 
     public static void main(String[] args) {
