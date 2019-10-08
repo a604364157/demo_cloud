@@ -4,6 +4,14 @@ server:
 spring:
   application:
     name: cloud-auth
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:10000
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        prefix: ${spring.application.name}-dev
 
   redis:
     database: 0
@@ -56,13 +64,6 @@ mybatis-plus:
     cache-enabled: false
     call-setters-on-nulls: true
 
-
-eureka:
-  instance:
-    hostname: localhost
-  client:
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:10000/eureka/
 
 security:
   oauth2:

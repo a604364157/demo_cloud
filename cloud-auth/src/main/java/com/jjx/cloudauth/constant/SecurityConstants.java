@@ -66,4 +66,14 @@ public interface SecurityConstants {
      * oauth 客户端信息
      */
     String CLIENT_DETAILS_KEY = PROJECT_PREFIX + OAUTH_PREFIX + "client:details";
+
+    /**
+     * 内部
+     */
+    String FROM_IN = "Y";
+
+    /**
+     * user缓存名
+     */
+    String USER_DETAILS = "user_details";
 }
