@@ -1,13 +1,12 @@
 package com.jjx.cloudnacosprovider.mapper;
 
-import com.jjx.cloudnacosprovider.entity.Student;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jjx.cloudnacosprovider.entity.Student;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author jiangjx
@@ -17,6 +16,7 @@ public interface IStudentMapper extends BaseMapper<Student> {
 
     /**
      * getByName
+     *
      * @param name name
      * @return student
      */
@@ -25,6 +25,7 @@ public interface IStudentMapper extends BaseMapper<Student> {
 
     /**
      * getByName
+     *
      * @param name name
      * @return student
      */
